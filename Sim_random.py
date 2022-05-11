@@ -11,7 +11,7 @@ import os
 move_reward = 0.1
 obs_reward = 0.1
 goal_reward = 10
-print('reward:' , move_reward, obs_reward, goal_reward)
+print(f'reward:move_reward={move_reward}, obs_reward={obs_reward}, goal_reward={goal_reward}')
 
 local_path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
@@ -260,6 +260,7 @@ if __name__ == "__main__":
         done = False
         i = 0
         obs = sim.reset(epi)
+        print(items)
         actions = [0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1]
 
         while done == False:
