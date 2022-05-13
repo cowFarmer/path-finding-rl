@@ -243,10 +243,30 @@ class Simulator:
                     for idx, new_pos in enumerate(self.actions):
                         render_cls.update_movement(new_pos, idx+1)
                     
-                    render_cls.save_gif(self.epi)
+                    render_cls.save_gif(self.epi, '_성공')
                     render_cls.viewer.close()
                     display.stop()
-        
+        else:     
+            # 완료되면 GIFS 저장
+                    goal_ob_reward = 'finish'
+                    height = 10
+                    width = 9 
+                    display = Display(visible=False, size=(width, height))
+                    display.start()
+
+                    start_point = (9, 4)
+                    unit = 50
+                    screen_height = height * unit
+                    screen_width = width * unit
+                    log_path = "./logs"
+                    data_path = "./data"
+                    render_cls = Render(screen_width, screen_height, unit, start_point, data_path, log_path)
+                    for idx, new_pos in enumerate(self.actions):
+                        render_cls.update_movement(new_pos, idx+1)
+                    
+                    render_cls.save_gif(self.epi, '_실패')
+                    render_cls.viewer.close()
+                    display.stop()
         return self.grid, reward, self.cumulative_reward, self.done, goal_ob_reward
 
 
