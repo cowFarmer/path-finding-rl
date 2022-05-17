@@ -248,6 +248,7 @@ class Render():
         cv2.imwrite(os.path.join(self.log_path, f"result_{idx}.png"), render_arr)
 
     def save_gif(self,epi, pass_fail):
+#         epi = str(epi).zfill(5)
         imageio.mimsave(
             os.path.join(self.log_path, './result'+str(int(epi))+pass_fail+'.gif'),
             np.array(self.movement))

@@ -8,9 +8,13 @@ import os
 
 
 # reward
-move_reward = 0.1
-obs_reward = 0.1
-goal_reward = 10
+# move_reward = 0.1
+# obs_reward = 0.1
+# goal_reward = 10
+
+move_reward = -1
+obs_reward = -10
+goal_reward = 50
 print('reward:' , move_reward, obs_reward, goal_reward)
 
 local_path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -56,6 +60,7 @@ class Simulator:
 
         self.local_target.sort()
         self.local_target.append([9,4]) 
+        # 처음 부터 local_target을 [8,4]로 정해도 좋을듯하다.
 
         # 알파벳을 Grid에 넣어서 -> grid에 2Dconv 적용 가능
 
@@ -83,17 +88,19 @@ class Simulator:
         '''
 
         # initial episode parameter setting
-        self.epi = epi
-        self.items = list(self.files.iloc[self.epi])[0]
+        self.epi = epi # 0~39999
+        self.items = list(self.files.iloc[self.epi])[0] # item list
         self.cumulative_reward = 0
         self.terminal_location = None
-        self.local_target = []
+        self.local_target = [] # items list
         self.actions = []
 
         # initial grid setting
+        # 그림
         self.grid = np.ones((self.height, self.width), dtype="float16")
 
         # set information about the gridworld
+        # set_box()는 local_target
         self.set_box()
         self.set_obstacle()
 
@@ -246,27 +253,27 @@ class Simulator:
                     render_cls.save_gif(self.epi, '_성공')
                     render_cls.viewer.close()
                     display.stop()
-        else:     
-            # 완료되면 GIFS 저장
-                    goal_ob_reward = 'finish'
-                    height = 10
-                    width = 9 
-                    display = Display(visible=False, size=(width, height))
-                    display.start()
+            else:     
+                # 완료되면 GIFS 저장
+                goal_ob_reward = 'finish'
+                height = 10
+                width = 9 
+                display = Display(visible=False, size=(width, height))
+                display.start()
 
-                    start_point = (9, 4)
-                    unit = 50
-                    screen_height = height * unit
-                    screen_width = width * unit
-                    log_path = "./logs"
-                    data_path = "./data"
-                    render_cls = Render(screen_width, screen_height, unit, start_point, data_path, log_path)
-                    for idx, new_pos in enumerate(self.actions):
-                        render_cls.update_movement(new_pos, idx+1)
-                    
-                    render_cls.save_gif(self.epi, '_실패')
-                    render_cls.viewer.close()
-                    display.stop()
+                start_point = (9, 4)
+                unit = 50
+                screen_height = height * unit
+                screen_width = width * unit
+                log_path = "./logs"
+                data_path = "./data"
+                render_cls = Render(screen_width, screen_height, unit, start_point, data_path, log_path)
+                for idx, new_pos in enumerate(self.actions):
+                    render_cls.update_movement(new_pos, idx+1)
+
+                render_cls.save_gif(self.epi, '_실패')
+                render_cls.viewer.close()
+                display.stop()
         return self.grid, reward, self.cumulative_reward, self.done, goal_ob_reward
 
 
